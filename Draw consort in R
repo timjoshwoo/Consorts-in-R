@@ -2,7 +2,6 @@ library(tidyverse)
 library(ggplot2)
 
 
-# For help, see the "Consorts in R" SOP under S:/STRC/Consortium/DMC SOP/DMC SOP Drafts
 
 ##### set parameters for the grid on which the consort will be drawn #####
 xmin <- 1
@@ -183,9 +182,7 @@ p +
   geom_rect(xmin=col1x1, xmax=col1x2, ymin=row5y1, ymax=row5y2+5, color='black',
             fill='slategray1', size=0.25) +
   annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row5y2-row5y1+5)*0.8+row5y1), label='Patients screened', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row5y2-row5y1+5)*0.55+row5y1), label='x', size=4) +
-  annotate('text', x=((col1x2-col1x1)*0.45+col1x1), y=((row5y2-row5y1)*0.25+row5y1), label=' CF-CBS rescreens = ', size=3.5)  +
-  annotate('text', x=((col1x2-col1x1)*0.85+col1x1), y=((row5y2-row5y1)*0.25+row5y1), label='x', hjust=1, size=3.5) ->
+  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row5y2-row5y1+5)*0.55+row5y1), label='x', size=4) ->
   p
 p
 
@@ -197,13 +194,6 @@ p +
   annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row5y2-row5y1)*0.25+row5y1), label='Adults = ', hjust=1, size=4, fontface=2) +
   annotate('text', x=((col2x2-col2x1)*0.5+col2x1+8), y=((row5y2-row5y1)*0.75+row5y1), label='x', hjust=1, size=4) +
   annotate('text', x=((col2x2-col2x1)*0.5+col2x1+8), y=((row5y2-row5y1)*0.25+row5y1), label='x', hjust=1, size=4)->
-  p
-p
-
-#Title
-p +
-  annotate('text', x=xmax*0.5, y=max(c(xmax, ymax)), label='Telecoaching Pilot', size=5, fontface=2) +
-  annotate('text', x=xmax*0.5, y=max(c(xmax, ymax))*0.95, label='PATIENTS - Screening and Recruitment Consort', size=5, fontface=2) ->
   p
 p
 
@@ -337,7 +327,7 @@ p
 
 #annotation
 p +
-  annotate('text', x=col2x1, y=row2y1-1.5, label='* Patients who rescreen for the CF-CBS cycle back to \"Patients screened\"', hjust=0, size=4) ->
+  annotate('text', x=col2x1, y=row2y1-1.5, label='', hjust=0, size=4) ->
   p
 p
 
