@@ -2,21 +2,21 @@ library(tidyverse)
 library(ggplot2)
 
 
+# For help, see the "Consorts in R" SOP under S:/STRC/Consortium/DMC SOP/DMC SOP Drafts
 
 ##### set parameters for the grid on which the consort will be drawn #####
+nrows <- 5
+ncols <- 4
 xmin <- 1
 xmax <- 100
 ymin <- 1
 ymax <- 100
 x <- c(xmin:xmax)
 y <- c(ymin:ymax)
-nrows <- 6
-ncols <- 4
-boxht <- (ymax / nrows) * 0.75
 boxwd <- (xmax / ncols) * 0.75
+boxht <- (ymax / nrows) * 0.65
 spacex <- (xmax / ncols) * 0.25
-spacey <- (ymax / nrows) * 0.25
-
+spacey <- (ymax / nrows) * 0.35
 data <- tibble(x, y)
 
 ##### plot the grid #####
@@ -24,14 +24,14 @@ data %>%
   ggplot(aes(x,y)) +
   scale_x_continuous(breaks = seq(0, max(x), 10)) +
   scale_y_continuous(breaks = seq(0, max(y), 10)) +
-  theme_light() -> # use theme_light() to see grid lines and axes; use theme_void() to blank the grid
+  theme_void() -> # use theme_light() to see grid lines and axes; use theme_void() for blank background
   p # all grid objects are set to object p
 p # running p plots p
 
 
 ##### set column and row parameters for creating boxes #####
 #column 1
-col1x1 <- spacex
+col1x1 <- 0.5*spacex
 col1x2 <- col1x1 + boxwd
 
 #column 2
@@ -45,14 +45,6 @@ col3x2 <- col3x1 + boxwd
 #column 4
 col4x1 <- col3x2+spacex
 col4x2 <- col4x1 + boxwd
-
-#column 5
-col5x1 <- col4x2+spacex
-col5x2 <- col5x1 + boxwd
-
-#column 6
-col6x1 <- col5x2+spacex
-col6x2 <- col6x1 + boxwd
 
 #row 1
 row1y1 <- spacey
@@ -74,234 +66,230 @@ row4y2 <- row4y1 + boxht
 row5y1 <- row4y2 + spacey
 row5y2 <- row5y1 + boxht
 
-#row 6
-row6y1 <- row5y2 + spacey
-row6y2 <- row6y1 + boxht
-
 
 ##### boxes #####
 #box1 - enrollment status
 p +
-  geom_rect(xmin=col1x1, xmax=col1x2, ymin=0, ymax=row1y2, color='black',
+  geom_rect(xmin=col1x1, xmax=col1x2, ymin=row1y1, ymax=row1y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row1y2)*0.85), label='Enrollment Status', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.45+col1x1), y=((row1y2)*0.5), label='Enrolled = ', size=5, fontface=2, color='darkgreen') +
-  annotate('text', x=((col1x2-col1x1)*0.85+col1x1), y=((row1y2)*0.5), label='x', hjust=1, size=5) +
-  annotate('text', x=((col1x2-col1x1)*0.45+col1x1), y=((row1y2)*0.2), label='Withdrawn = ', size=4) +
-  annotate('text', x=((col1x2-col1x1)*0.85+col1x1), y=((row1y2)*0.2), label='x', hjust=1, size=4)  ->
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.85+row1y1), label='Enrollment Status', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.45+col1x1), y=(boxht*0.5+row1y1), label='Enrolled = ', size=5, fontface=2, color='darkgreen') +
+  annotate('text', x=(boxwd*0.85+col1x1), y=(boxht*0.5+row1y1), label='x', hjust=1, size=5) +
+  annotate('text', x=(boxwd*0.45+col1x1), y=(boxht*0.2+row1y1), label='Withdrawn = ', size=4) +
+  annotate('text', x=(boxwd*0.85+col1x1), y=(boxht*0.2+row1y1), label='x', hjust=1, size=4)  ->
   p
-p
+
 
 #box 2 -  age
 p +
   geom_rect(xmin=col2x1, xmax=col2x2, ymin=row1y1, ymax=row1y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row1y2-row1y1)*0.75+row1y1), label='14-17 yo = ', hjust=1, size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row1y2-row1y1)*0.25+row1y1), label='18+ yo = ', hjust=1, size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.85+col2x1), y=((row1y2-row1y1)*0.75+row1y1), label='x', hjust=1, size=4) +
-  annotate('text', x=((col2x2-col2x1)*0.85+col2x1), y=((row1y2-row1y1)*0.25+row1y1), label='x', hjust=1, size=4)->
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.75+row1y1), label='14-17 yo = ', hjust=1, size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.25+row1y1), label='18+ yo = ', hjust=1, size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.75+col2x1), y=(boxht*0.75+row1y1), label='x', hjust=1, size=4) +
+  annotate('text', x=(boxwd*0.75+col2x1), y=(boxht*0.25+row1y1), label='x', hjust=1, size=4)->
   p
-p
 
-#box 5 - met cfcbs
+
+#box 5 - met requirement
 p +
   geom_rect(xmin=col1x1, xmax=col1x2, ymin=row2y1, ymax=row2y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row2y2-row2y1)*0.8+row2y1), label='Met CF-CBS', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row2y2-row2y1)*0.55+row2y1), label='requirement', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row2y2-row2y1)*0.25+row2y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.8+row2y1), label='Met', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.55+row2y1), label='requirement', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.25+row2y1), label='x', size=4) ->
   p
-p
+
 
 #box 6 - screen fails
 p +
   geom_rect(xmin=col2x1, xmax=col2x2, ymin=row2y1, ymax=row2y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row2y2-row2y1)*0.75+row2y1), label='Screen fails', size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row2y2-row2y1)*0.25+row2y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.75+row2y1), label='Screen fails', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.25+row2y1), label='x', size=4) ->
   p
-p
+
 
 #box 9 - consented
 p +
   geom_rect(xmin=col1x1, xmax=col1x2, ymin=row3y1, ymax=row3y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row3y2-row3y1)*0.75+row3y1), label='Consented', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row3y2-row3y1)*0.25+row3y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.75+row3y1), label='Consented', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.25+row3y1), label='x', size=4) ->
   p
-p
+
 
 #box 10 - not consented
 p +
   geom_rect(xmin=col2x1, xmax=col2x2, ymin=row3y1, ymax=row3y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row3y2-row3y1)*0.75+row3y1), label='Not consented', size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row3y2-row3y1)*0.25+row3y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.75+row3y1), label='Not consented', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.25+row3y1), label='x', size=4) ->
   p
-p
+
 
 #box 13 -  eligible based on inclusion
 p +
   geom_rect(xmin=col1x1, xmax=col1x2, ymin=row4y1, ymax=row4y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row4y2-row4y1)*0.8+row4y1), label='Eligible based on', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row4y2-row4y1)*0.55+row4y1), label='inclusion/exclusion', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row4y2-row4y1)*0.25+row4y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.8+row4y1), label='Eligible based on', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.55+row4y1), label='inclusion/exclusion', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.25+row4y1), label='x', size=4) ->
   p
-p
 
-#box 14 -  temp inel
+
+#box 14 -  pending
 p +
   geom_rect(xmin=col2x1, xmax=col2x2, ymin=row4y1, ymax=row4y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row4y2-row4y1)*0.75+row4y1), label='Temporarily ineligible', size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row4y2-row4y1)*0.25+row4y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.75+row4y1), label='Pending', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.25+row4y1), label='x', size=4) ->
   p
-p
+
 
 #box 15 -  ineligible
 p +
   geom_rect(xmin=col3x1, xmax=col3x2, ymin=row4y1, ymax=row4y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col3x2-col3x1)*0.5+col3x1), y=((row4y2-row4y1)*0.75+row4y1), label='Ineligible', size=4, fontface=2) +
-  annotate('text', x=((col3x2-col3x1)*0.5+col3x1), y=((row4y2-row4y1)*0.25+row4y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col3x1), y=(boxht*0.75+row4y1), label='Ineligible', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col3x1), y=(boxht*0.25+row4y1), label='x', size=4) ->
   p
-p
+
 
 #box 16 -  declined
 p +
   geom_rect(xmin=col4x1, xmax=col4x2, ymin=row4y1, ymax=row4y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col4x2-col4x1)*0.5+col4x1), y=((row4y2-row4y1)*0.75+row4y1), label='Declined', size=4, fontface=2) +
-  annotate('text', x=((col4x2-col4x1)*0.5+col4x1), y=((row4y2-row4y1)*0.25+row4y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col4x1), y=(boxht*0.75+row4y1), label='Declined', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col4x1), y=(boxht*0.25+row4y1), label='x', size=4) ->
   p
 p
 
 #box 17 -  patients screened
 p +
-  geom_rect(xmin=col1x1, xmax=col1x2, ymin=row5y1, ymax=row5y2+5, color='black',
+  geom_rect(xmin=col1x1, xmax=col1x2, ymin=row5y1, ymax=row5y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row5y2-row5y1+5)*0.8+row5y1), label='Patients screened', size=4, fontface=2) +
-  annotate('text', x=((col1x2-col1x1)*0.5+col1x1), y=((row5y2-row5y1+5)*0.55+row5y1), label='x', size=4) ->
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.75+row5y1), label='Patients screened', size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col1x1), y=(boxht*0.5+row5y1), label='x', size=4) ->
   p
-p
+
 
 #box 18 -  peds vs adus
 p +
   geom_rect(xmin=col2x1, xmax=col2x2, ymin=row5y1, ymax=row5y2, color='black',
             fill='slategray1', size=0.25) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row5y2-row5y1)*0.75+row5y1), label='Peds = ', hjust=1, size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1), y=((row5y2-row5y1)*0.25+row5y1), label='Adults = ', hjust=1, size=4, fontface=2) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1+8), y=((row5y2-row5y1)*0.75+row5y1), label='x', hjust=1, size=4) +
-  annotate('text', x=((col2x2-col2x1)*0.5+col2x1+8), y=((row5y2-row5y1)*0.25+row5y1), label='x', hjust=1, size=4)->
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.75+row5y1), label='Peds = ', hjust=1, size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.5+col2x1), y=(boxht*0.25+row5y1), label='Adults = ', hjust=1, size=4, fontface=2) +
+  annotate('text', x=(boxwd*0.75+col2x1), y=(boxht*0.75+row5y1), label='x', hjust=1, size=4) +
+  annotate('text', x=(boxwd*0.75+col2x1), y=(boxht*0.25+row5y1), label='x', hjust=1, size=4)->
   p
-p
+
 
 
 ##### arrows #####
 #column 1
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col1x2-col1x1)*0.5+col1x1, y=row5y1, yend=row4y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col1x1, y=row5y1, yend=row4y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col1x2-col1x1)*0.5+col1x1, y=row4y1, yend=row3y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col1x1, y=row4y1, yend=row3y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col1x2-col1x1)*0.5+col1x1, y=row3y1, yend=row2y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col1x1, y=row3y1, yend=row2y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col1x2-col1x1)*0.5+col1x1, y=row2y1, yend=row1y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col1x1, y=row2y1, yend=row1y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 # horizontals
 p +
   geom_segment(
-    x=col1x2, xend=col2x1, y=((row5y2-row5y1)*0.5+row5y1), yend=((row5y2-row5y1)*0.5+row5y1),
+    x=col1x2, xend=col2x1, y=(boxht*0.5+row5y1), yend=(boxht*0.5+row5y1),
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col4x2-col4x1)*0.5+col4x1, y=(row5y1-row4y2)*0.5+row4y2, yend=(row5y1-row4y2)*0.5+row4y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col4x1, y=row4y2+spacey*0.5, yend=row4y2+spacey*0.5,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col2x2-col2x1)*0.5+col2x1, y=(row4y1-row3y2)*0.5+row3y2, yend=(row4y1-row3y2)*0.5+row3y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col2x1, y=row3y2+spacey*0.5, yend=row3y2+spacey*0.5,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col1x2-col1x1)*0.5+col1x1, xend=(col2x2-col2x1)*0.5+col2x1, y=(row3y1-row2y2)*0.5+row2y2, yend=(row3y1-row2y2)*0.5+row2y2,
+    x=boxwd*0.5+col1x1, xend=boxwd*0.5+col2x1, y=row2y2+spacey*0.5, yend=row2y2+spacey*0.5,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=col1x2, xend=col2x1, y=(row1y2-row1y1)*0.5+row1y1, yend=(row1y2-row1y1)*0.5+row1y1,
+    x=col1x2, xend=col2x1, y=boxht*0.5+row1y1, yend=boxht*0.5+row1y1,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
+
 
 #column 2
 p +
   geom_segment(
-    x=(col2x2-col2x1)*0.5+col2x1, xend=(col2x2-col2x1)*0.5+col2x1, y=(row5y1-row4y2)*0.5+row4y2, yend=row4y2,
+    x=boxwd*0.5+col2x1, xend=boxwd*0.5+col2x1, y=row4y2+spacey*0.5, yend=row4y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col2x2-col2x1)*0.5+col2x1, xend=(col2x2-col2x1)*0.5+col2x1, y=(row4y1-row3y2)*0.5+row3y2, yend=row3y2,
+    x=boxwd*0.5+col2x1, xend=boxwd*0.5+col2x1, y=row3y2+spacey*0.5, yend=row3y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 p +
   geom_segment(
-    x=(col2x2-col2x1)*0.5+col2x1, xend=(col2x2-col2x1)*0.5+col2x1, y=(row3y1-row2y2)*0.5+row2y2, yend=row2y2,
+    x=boxwd*0.5+col2x1, xend=boxwd*0.5+col2x1, y=row2y2+spacey*0.5, yend=row2y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 #column 3
 p +
   geom_segment(
-    x=(col3x2-col3x1)*0.5+col3x1, xend=(col3x2-col3x1)*0.5+col3x1, y=(row5y1-row4y2)*0.5+row4y2, yend=row4y2,
+    x=boxwd*0.5+col3x1, xend=boxwd*0.5+col3x1, y=row4y2+spacey*0.5, yend=row4y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
@@ -310,25 +298,32 @@ p
 #column 4
 p +
   geom_segment(
-    x=(col4x2-col4x1)*0.5+col4x1, xend=(col4x2-col4x1)*0.5+col4x1, y=(row5y1-row4y2)*0.5+row4y2, yend=row4y2,
+    x=boxwd*0.5+col4x1, xend=boxwd*0.5+col4x1, y=row4y2+spacey*0.5, yend=row4y2,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(2,'mm'), type='closed')) ->
   p
-p
+
 
 #enrollment status
 p +
   geom_segment(
-    x=col1x1+(col1x2-col1x1)*.1, xend=col1x2-(col1x2-col1x1)*.1, y=row1y2*0.75, yend=row1y2*0.75,
+    x=col1x1+boxwd*.1, xend=col1x2-boxwd*.1, y=boxht*0.7+row1y1, yend=boxht*0.7+row1y1,
     size=0.25, linejoin='mitre', lineend='butt',
     arrow = arrow(length=unit(0,'mm'), type='closed')) ->
   p
-p
 
-#annotation
+
+##### footnote #####
 p +
-  annotate('text', x=col2x1, y=row2y1-1.5, label='', hjust=0, size=4) ->
+  annotate('text', x=xmax, y=ymin, label=paste('[Study Name] - Patient Consort - Updated', format(Sys.Date(), '%m/%d/%Y')), hjust=1, size=4, fontface=3) ->
   p
+
+
+p +
+  annotate('text', x=xmin, y=ymin, label='* [Footnote]', hjust=0, size=4) ->
+  p
+
+##### plot #####
 p
 
 
@@ -336,3 +331,4 @@ p
 png('[FILE PATH]', width=1300, height=1000, res=100)
 plot(p)
 dev.off()
+
